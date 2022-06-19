@@ -1,3 +1,4 @@
+//Restful API
 const MongoClient = require("mongodb").MongoClient;
 const User = require("./user");
 const jwt = require("jsonwebtoken");
@@ -19,6 +20,7 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000
 
+//configuration for swagger
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 const option = {
@@ -50,6 +52,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+//token
 function authenticate(req, res, next) {
 	const authHeader = req.headers['authorization'];
 	const token = authHeader && authHeader.split(' ')[1];
@@ -81,6 +84,7 @@ function authenticate(req, res, next) {
  *         description: User does not exist
  */
 
+//check the presence of user
 app.get('/user/:id', async (req, res) => {
 	const {id} = req.params;
 	const user = await User.getUser(id);
@@ -124,6 +128,8 @@ app.get('/hello', (req, res) => {
  *       401:
  *         description: Invalid username or password
  */
+
+//user login
 app.post('/loginuser', async (req, res) => {
 	console.log(req.body);
 	
@@ -173,6 +179,8 @@ app.post('/loginuser', async (req, res) => {
  *       401:
  *         description: Invalid username or password
  */
+
+//admin login
 app.post('/loginadmin', async (req, res) => {
 	console.log(req.body);
 	
@@ -221,6 +229,8 @@ app.post('/loginadmin', async (req, res) => {
  *       401:
  *         description: Invalid username or password
  */
+
+//worker login
 app.post('/loginworker', async (req, res) => {
 	console.log(req.body);
 	
@@ -273,6 +283,8 @@ app.post('/loginworker', async (req, res) => {
  *       401:
  *         description: User name already exists
  */
+
+//admin registration
 app.post('/registeradmin', async (req, res) => {
 	//console.log(req.body);
 	
@@ -322,6 +334,8 @@ app.post('/registeradmin', async (req, res) => {
  *       401:
  *         description: User name already exists
  */
+
+//user registration
 app.post('/registeruser', async (req, res) => {
 	console.log(req.body);
 	
@@ -368,6 +382,7 @@ app.post('/registeruser', async (req, res) => {
  *         description: User name already exists
  */
 
+//worker registration
 app.post('/registerworker', async (req, res) => {
 	console.log(req.body);
 	
@@ -412,6 +427,8 @@ app.post('/registerworker', async (req, res) => {
  *       403:
  *         description: Unauthorised
  */
+
+//update user membership date
 app.patch('/update',authenticate, async (req, res) => {
 	console.log(req.body);
 	if(req.user.role == "admin" || req.user.role == "worker"){
@@ -457,6 +474,8 @@ app.patch('/update',authenticate, async (req, res) => {
  *       403:
  *         description: Unauthorised
  */
+
+//delete user account
 app.delete('/deleteuser',authenticate, async (req, res) => {
 	console.log(req.body);
 	if(req.user.role == "admin"){
@@ -501,6 +520,8 @@ app.delete('/deleteuser',authenticate, async (req, res) => {
  *       403:
  *         description: Unauthorised
  */
+
+//delete worker account
 app.delete('/deleteworker',authenticate, async (req, res) => {
 	console.log(req.body);
 	if(req.user.role == "admin"){
@@ -545,6 +566,8 @@ app.delete('/deleteworker',authenticate, async (req, res) => {
  *       403:
  *         description: Unauthorised
  */
+
+//delete admin account
 app.delete('/deleteadmin',authenticate, async (req, res) => {
 	console.log(req.body);
 	if(req.user.role == "admin"){
@@ -589,6 +612,8 @@ app.delete('/deleteadmin',authenticate, async (req, res) => {
  *       403:
  *         description: User is not admin
  */
+
+//data analytic for days
 app.post('/analyzeday',authenticate, async (req, res) => {
 	console.log(req.body);
 	if(req.user.role == "admin"){
