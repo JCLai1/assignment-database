@@ -6,7 +6,6 @@ function generateAccessToken(payload) {
 }
 
 MongoClient.connect(
-	// TODO: Connection 
 	"mongodb+srv://m001-student:m001-mongodb-basics@sandbox.3owbc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
 	{ useNewUrlParser: true },
 ).catch(err => {
